@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mostrar Texto en Capa</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #2d3436;
+            margin-bottom: 30px;
+            font-size: 24px;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus {
+            border-color: #74b9ff;
+            outline: none;
+        }
+        
+        button {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #00b894, #00a085);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-bottom: 25px;
+            transition: transform 0.2s;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+        }
+        
+        .capa-texto {
+            min-height: 100px;
+            padding: 20px;
+            border: 2px solid #00b894;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+            margin-top: 10px;
+            word-wrap: break-word;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+        
+        .mensaje-vacio {
+            color: #636e72;
+            font-style: italic;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Mostrar Texto en Capa</h1>
+        
+        <input type="text" id="textoInput" placeholder="Escribe tu texto aquí...">
+        
+        <button onclick="mostrarTexto()">Mostrar Texto</button>
+        
+        <div class="capa-texto" id="capaTexto">
+            <span class="mensaje-vacio">El texto aparecerá aquí después de hacer clic</span>
+        </div>
+    </div>
+
+    <script>
+        function mostrarTexto() {
+            const input = document.getElementById('textoInput');
+            const texto = input.value;
+            const capa = document.getElementById('capaTexto');
+            
+            if (texto.trim() === '') {
+                capa.innerHTML = '<span class="mensaje-vacio">⚠️ Por favor, escribe algo primero</span>';
+                return;
+            }
+            
+            capa.textContent = texto;
+            input.value = '';
+            
+            console.log('Texto mostrado:', texto);
+        }
+        
+        document.getElementById('textoInput').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                mostrarTexto();
+            }
+        });
+    </script>
+</body>
+</html>
