@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestor de Ciudades Simple</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        
+        .controls {
+            background-color: #e9ecef;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        
+        input, button {
+            padding: 8px;
+            margin: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        button {
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            border: none;
+        }
+        
+        button:hover {
+            background-color: #0056b3;
+        }
+        
+        .city-list {
+            margin-top: 20px;
+        }
+        
+        .city-item {
+            padding: 10px;
+            margin: 5px 0;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            border-left: 4px solid #007bff;
+        }
+        
+        .max-population {
+            color: red;
+            font-weight: bold;
+            border-left-color: red;
+        }
+        
+        .min-population {
+            color: green;
+            font-weight: bold;
+            border-left-color: green;
+        }
+        
+        .info {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #d4edda;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Gestor de Ciudades con Map</h1>
+        
+        <div class="controls">
+            <h3>Gestión de Ciudades</h3>
+            <input type="text" id="cityName" placeholder="Nombre de ciudad">
+            <input type="number" id="cityPopulation" placeholder="Habitantes">
+            <button onclick="addCity()">Añadir Ciudad</button>
+            <button onclick="deleteCity()">Borrar Ciudad</button>
+            <button onclick="showMaxPopulation()">Ciudad con Más Habitantes</button>
+            <button onclick="showMinPopulation()">Ciudad con Menos Habitantes</button>
+        </div>
+        
+        <div id="cityCount" class="info">
+            Total de ciudades: 0
+        </div>
+        
+        <div id="populationInfo"></div>
+        
+        <div class="city-list" id="cityList">
+            <p>No hay ciudades agregadas.</p>
+        </div>
+    </div>
+
+    <script>
+        const citiesMap = new Map();
+        
+        citiesMap.set('Madrid', 3200000);
+        citiesMap.set('Barcelona', 1600000);
+        citiesMap.set('Valencia', 790000);
+        
+        displayCities();
+        
+        function displayCities() {
+            const cityList = document.getElementById('cityList');
+            const cityCount = document.getElementById('cityCount');
+            
+            cityCount.textContent = `Total de ciudades: ${citiesMap.size}`;
+            
+            if (citiesMap.size === 0) {
+                cityList.innerHTML = '<p>No hay ciudades agregadas.</p>';
+                return;
+            }
+            
+            let html = '';
+            
+            for (let [city, population] of citiesMap) {
+                html += `
+                    <div class="city-item">
+                        <strong>${city}</strong>: ${population.toLocaleString()} habitantes
+                        <button onclick="removeCity('${city}')" style="margin-left: 10px; padding: 3px 8px; font-size: 12px;">Eliminar</button>
+                    </div>
+                `;
+            }
+            
+            cityList.innerHTML = html;
+        }
+        
+        function addCity() {
+            const cityName = document.getElementById('cityName').value.trim();
+            const cityPopulation = parseInt(document.getElementById('cityPopulation').value);
+            
+            if (!cityName) {
+                alert('Por favor, ingresa un nombre de ciudad.');
+                return;
+            }
+            
+            if (isNaN(cityPopulation) || cityPopulation <= 0) {
+                alert('Por favor, ingresa un número de habitantes válido.');
+                return;
+            }
+            
+            citiesMap.set(cityName, cityPopulation);
+            
+            document.getElementById('cityName').value = '';
+            document.getElementById('cityPopulation').value = '';
+            
+            displayCities();
+        }
+        
+        function removeCity(cityName) {
+            if (confirm(`¿Eliminar la ciudad ${cityName}?`)) {
+                citiesMap.delete(cityName);
+                displayCities();
+            }
+        }
+        
+        function deleteCity() {
+            const cityName = document.getElementById('cityName').value.trim();
+            
+            if (!cityName) {
+                alert('Ingresa el nombre de la ciudad a eliminar.');
+                return;
+            }
+            
+            if (!citiesMap.has(cityName)) {
+                alert(`La ciudad "${cityName}" no existe.`);
+                return;
+            }
+            
+            removeCity(cityName);
+        }
+        
+        function showMaxPopulation() {
+            if (citiesMap.size === 0) {
+                alert('No hay ciudades en la lista.');
+                return;
+            }
+            
+            let maxCity = '';
+            let maxPopulation = 0;
+            
+            for (let [city, population] of citiesMap) {
+                if (population > maxPopulation) {
+                    maxPopulation = population;
+                    maxCity = city;
+                }
+            }
+            
+            const infoDiv = document.getElementById('populationInfo');
+            infoDiv.innerHTML = `
+                <div class="info" style="background-color: #f8d7da; border-left-color: red;">
+                    <strong>Ciudad con MÁS habitantes:</strong> ${maxCity} - ${maxPopulation.toLocaleString()} habitantes
+                </div>
+            `;
+            
+            highlightCity(maxCity, 'max');
+        }
+        
+        function showMinPopulation() {
+            if (citiesMap.size === 0) {
+                alert('No hay ciudades en la lista.');
+                return;
+            }
+            
+            let minCity = '';
+            let minPopulation = Number.MAX_SAFE_INTEGER;
+            
+            for (let [city, population] of citiesMap) {
+                if (population < minPopulation) {
+                    minPopulation = population;
+                    minCity = city;
+                }
+            }
+            
+            const infoDiv = document.getElementById('populationInfo');
+            infoDiv.innerHTML = `
+                <div class="info" style="background-color: #d1ecf1; border-left-color: green;">
+                    <strong>Ciudad con MENOS habitantes:</strong> ${minCity} - ${minPopulation.toLocaleString()} habitantes
+                </div>
+            `;
+            
+            highlightCity(minCity, 'min');
+        }
+        
+        function highlightCity(cityName, type) {
+            const cityList = document.getElementById('cityList');
+            let html = '';
+            
+            for (let [city, population] of citiesMap) {
+                const highlightClass = city === cityName ? 
+                    (type === 'max' ? 'max-population' : 'min-population') : '';
+                
+                html += `
+                    <div class="city-item ${highlightClass}">
+                        <strong>${city}</strong>: ${population.toLocaleString()} habitantes
+                        <button onclick="removeCity('${city}')" style="margin-left: 10px; padding: 3px 8px; font-size: 12px;">Eliminar</button>
+                    </div>
+                `;
+            }
+            
+            cityList.innerHTML = html;
+        }
+        
+        document.getElementById('cityPopulation').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                addCity();
+            }
+        });
+    </script>
+</body>
+</html>

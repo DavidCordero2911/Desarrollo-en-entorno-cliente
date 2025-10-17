@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora con Funciones Flecha</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            padding: 30px;
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 25px;
+            font-size: 1.8rem;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #444;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus {
+            border-color: #4a6ee0;
+            outline: none;
+        }
+        
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        button {
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: white;
+        }
+        
+        .suma {
+            background-color: #4CAF50;
+        }
+        
+        .resta {
+            background-color: #f44336;
+        }
+        
+        .multiplicacion {
+            background-color: #2196F3;
+        }
+        
+        .division {
+            background-color: #FF9800;
+        }
+        
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        button:active {
+            transform: translateY(1px);
+        }
+        
+        .result {
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            border-left: 5px solid #4a6ee0;
+            text-align: center;
+            font-size: 18px;
+            min-height: 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .resultado-numero {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-top: 5px;
+        }
+        
+        .operacion {
+            color: #7f8c8d;
+            font-size: 16px;
+        }
+        
+        .error {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        
+        .info {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #e8f4fd;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #2c3e50;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Calculadora con Funciones Flecha</h1>
+        
+        <div class="input-group">
+            <label for="numero1">Primer número:</label>
+            <input type="number" id="numero1" placeholder="Ingresa un número">
+        </div>
+        
+        <div class="input-group">
+            <label for="numero2">Segundo número:</label>
+            <input type="number" id="numero2" placeholder="Ingresa otro número">
+        </div>
+        
+        <div class="buttons">
+            <button class="suma" onclick="calcular('suma')">+ Sumar</button>
+            <button class="resta" onclick="calcular('resta')">- Restar</button>
+            <button class="multiplicacion" onclick="calcular('multiplicacion')">× Multiplicar</button>
+            <button class="division" onclick="calcular('division')">÷ Dividir</button>
+        </div>
+        
+        <div class="result" id="resultado">
+            <span class="operacion" id="operacion-texto">Selecciona una operación</span>
+            <div class="resultado-numero" id="resultado-numero">-</div>
+        </div>
+    </div>
+
+    <script>
+
+        const sumar = (a, b) => a + b;
+        const restar = (a, b) => a - b;
+        const multiplicar = (a, b) => a * b;
+        const dividir = (a, b) => {
+            if (b === 0) {
+                throw new Error("No se puede dividir por cero");
+            }
+            return a / b;
+        };
+
+        function calcular(operacion) {
+
+            const num1 = parseFloat(document.getElementById('numero1').value);
+            const num2 = parseFloat(document.getElementById('numero2').value);
+            
+            const operacionTexto = document.getElementById('operacion-texto');
+            const resultadoNumero = document.getElementById('resultado-numero');
+            
+            if (isNaN(num1) || isNaN(num2)) {
+                operacionTexto.textContent = "Error";
+                resultadoNumero.innerHTML = '<span class="error">Por favor, ingresa números válidos</span>';
+                return;
+            }
+            
+            let resultado;
+            let simbolo;
+            
+            try {
+                switch(operacion) {
+                    case 'suma':
+                        resultado = sumar(num1, num2);
+                        simbolo = '+';
+                        break;
+                    case 'resta':
+                        resultado = restar(num1, num2);
+                        simbolo = '-';
+                        break;
+                    case 'multiplicacion':
+                        resultado = multiplicar(num1, num2);
+                        simbolo = '×';
+                        break;
+                    case 'division':
+                        resultado = dividir(num1, num2);
+                        simbolo = '÷';
+                        break;
+                    default:
+                        throw new Error("Operación no válida");
+                }
+                
+
+                operacionTexto.textContent = `${num1} ${simbolo} ${num2}`;
+                resultadoNumero.textContent = resultado;
+                
+            } catch (error) {
+                operacionTexto.textContent = "Error";
+                resultadoNumero.innerHTML = `<span class="error">${error.message}</span>`;
+            }
+        }
+
+        document.getElementById('numero1').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                document.getElementById('numero2').focus();
+            }
+        });
+        
+        document.getElementById('numero2').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                calcular('suma');
+            }
+        });
+    </script>
+</body>
+</html>
