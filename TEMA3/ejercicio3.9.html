@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capitalizar Palabras</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+            border-left: 4px solid #4CAF50;
+        }
+        .code {
+            background-color: #f4f4f4;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 20px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Conversión a mayusculas</h1>
+        
+        <div class="input-group">
+            <label for="inputText">Introduce una frase:</label>
+            <input type="text" id="inputText" placeholder="Escribe aquí tu texto...">
+        </div>
+        
+        <button onclick="capitalizeWordsFromInput()">Capitalizar Palabras</button>
+        
+        <div class="result">
+            <strong>Resultado:</strong>
+            <div id="result"></div>
+        </div>
+    </div>
+
+    <script>
+        function capitalizeWords(str) {
+            // Dividir la cadena en palabras
+            const words = str.split(' ');
+            
+            // Recorrer cada palabra
+            for (let i = 0; i < words.length; i++) {
+                // Verificar que la palabra no esté vacía
+                if (words[i].length > 0) {
+                    // Obtener la primera letra y el resto de la palabra
+                    const firstLetter = words[i].charAt(0).toUpperCase();
+                    const restOfWord = words[i].slice(1).toLowerCase();
+                    
+                    // Combinar la primera letra en mayúscula con el resto de la palabra
+                    words[i] = firstLetter + restOfWord;
+                }
+            }
+            
+            // Unir las palabras nuevamente en una cadena
+            return words.join(' ');
+        }
+        
+        // Función para ejecutar desde el botón
+        function capitalizeWordsFromInput() {
+            const inputText = document.getElementById('inputText').value;
+            const result = capitalizeWords(inputText);
+            document.getElementById('result').textContent = result;
+        }
+    </script>
+</body>
+</html>

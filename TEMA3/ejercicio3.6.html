@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ocultar Email</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f0f8ff;
+        }
+        
+        .container {
+            background-color: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        p {
+            color: #7f8c8d;
+            margin-bottom: 20px;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #34495e;
+        }
+        
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #bdc3c7;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        
+        button {
+            background-color: #3498db;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+        
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #ecf0f1;
+            border-radius: 5px;
+            border-left: 4px solid #3498db;
+        }
+        
+        .examples {
+            margin-top: 30px;
+            padding: 15px;
+            background-color: #fff9e6;
+            border-radius: 5px;
+            text-align: left;
+        }
+        
+        .examples h3 {
+            color: #e67e22;
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Ocultar Email</h1>
+        <p>Protege tu dirección de email ocultando caracteres</p>
+        
+        <div class="input-group">
+            <label for="email">Ingresa tu email:</label>
+            <input type="email" id="email" placeholder="ejemplo@correo.com" value="usuario@gmail.com">
+        </div>
+        
+        <button onclick="ocultarEmail()">Ocultar Email</button>
+        
+        <div class="result">
+            <strong>Email oculto:</strong>
+            <div id="resultado" style="font-family: monospace; margin-top: 10px; font-size: 18px;">
+                Aquí aparecerá el resultado
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function ocultarEmailCompleto(email) {
+            const partes = email.split('@');
+            const usuario = partes[0];
+            const dominioPartes = partes[1].split('.');
+            const dominio = dominioPartes[0];
+            const extension = dominioPartes[1];
+            
+            // Ocultar usuario (mantener primero y último)
+            const usuarioOculto = usuario.length > 2 
+                ? usuario.charAt(0) + '*'.repeat(usuario.length - 2) + usuario.charAt(usuario.length - 1)
+                : usuario.charAt(0) + '*';
+            
+            // Ocultar dominio (mantener primero y último)
+            const dominioOculto = dominio.length > 2
+                ? dominio.charAt(0) + '*'.repeat(dominio.length - 2) + dominio.charAt(dominio.length - 1)
+                : dominio.charAt(0) + '*';
+            
+            return usuarioOculto + '@' + dominioOculto + '.' + extension;
+        }
+
+        function ocultarEmail() {
+            // Obtener el email del input
+            const email = document.getElementById("email").value;
+            
+            // Verificar que sea un email válido
+            if (!email.includes('@') || !email.includes('.')) {
+                document.getElementById("resultado").textContent = "❌ Por favor, ingresa un email válido";
+                return;
+            }
+            
+            // Ocultar el email y mostrar resultado
+            const emailOculto = ocultarEmailCompleto(email);
+            document.getElementById("resultado").textContent = emailOculto;
+        }
+        
+        // Mostrar un ejemplo al cargar la página
+        window.onload = function() {
+            ocultarEmail();
+        };
+    </script>
+</body>
+</html>

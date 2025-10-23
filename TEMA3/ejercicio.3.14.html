@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insertar Cadena</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 700px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #1976D2;
+        }
+        .result {
+            margin-top: 25px;
+            padding: 20px;
+            background-color: #e8f5e9;
+            border-radius: 4px;
+            border-left: 4px solid #4CAF50;
+        }
+        .examples {
+            margin-top: 25px;
+            padding: 15px;
+            background-color: #fff3e0;
+            border-radius: 4px;
+            border-left: 4px solid #FF9800;
+        }
+        .code {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 4px;
+            margin-top: 25px;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            border: 1px solid #e0e0e0;
+        }
+        .example-btn {
+            background-color: #FF9800;
+            margin: 5px;
+            padding: 8px 15px;
+            width: auto;
+            font-size: 14px;
+        }
+        .example-btn:hover {
+            background-color: #F57C00;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Insertar Cadena en Posición Específica</h1>
+        
+        <div class="input-group">
+            <label for="mainString">Cadena principal:</label>
+            <input type="text" id="mainString">
+        </div>
+        
+        <div class="input-group">
+            <label for="insertString">Cadena a insertar:</label>
+            <input type="text" id="insertString">
+        </div>
+        
+        <div class="input-group">
+            <label for="position">Posición (opcional, por defecto es 1):</label>
+            <input type="number" id="position">
+        </div>
+        
+        <button onclick="insertStringFromInput()">Insertar Cadena</button>
+        
+        <div class="result">
+            <strong>Resultado:</strong>
+            <div id="result" style="margin-top: 10px; font-style: italic;"></div>
+        </div>
+    </div>
+
+    <script>
+        function insert(mainString, insertString = '', position = 1) {
+            // Validar que la posición sea un número válido
+            if (position < 1) {
+                position = 1;
+            }
+            
+            // Si la posición es mayor que la longitud de la cadena,
+            // insertar al final
+            if (position > mainString.length) {
+                return mainString + ' ' + insertString;
+            }
+            
+            // Dividir la cadena en dos partes: antes y después de la posición
+            const firstPart = mainString.slice(0, position - 1);
+            const secondPart = mainString.slice(position - 1);
+            
+            // Combinar las partes con la cadena a insertar
+            return firstPart + insertString + ' ' + secondPart;
+        }
+        
+        // Función para ejecutar desde el botón
+        function insertStringFromInput() {
+            const mainString = document.getElementById('mainString').value;
+            const insertString = document.getElementById('insertString').value;
+            let position = document.getElementById('position').value;
+            
+            // Si no se especifica posición, usar valor por defecto (1)
+            if (position === '') {
+                position = 1;
+            } else {
+                position = parseInt(position);
+            }
+            
+            const result = insert(mainString, insertString, position);
+            document.getElementById('result').textContent = result;
+        }
+        
+        // Funciones para cargar ejemplos
+        function loadExample1() {
+            document.getElementById('mainString').value = '...';
+            document.getElementById('insertString');
+            document.getElementById('position');
+            insertStringFromInput();
+        }
+        
+        function loadExample2() {
+            document.getElementById('mainString').value = '...';
+            document.getElementById('insertString');
+            document.getElementById('position');
+            insertStringFromInput();
+        }
+        
+        function loadExample3() {
+            document.getElementById('mainString').value = '...';
+            document.getElementById('insertString');
+            document.getElementById('position');
+            insertStringFromInput();
+        }
+    </script>
+</body>
+</html>

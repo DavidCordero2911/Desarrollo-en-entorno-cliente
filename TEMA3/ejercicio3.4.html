@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Extraer Caracteres</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        
+        .input-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+        
+        button:hover {
+            background-color: #45a049;
+        }
+        
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e9f7e9;
+            border-radius: 4px;
+            border-left: 4px solid #4CAF50;
+        }
+        
+        .examples {
+            margin-top: 30px;
+            padding: 15px;
+            background-color: #f0f8ff;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Extraer Caracteres de una Cadena</h1>
+        
+        <div class="input-group">
+            <label for="texto">Texto:</label>
+            <input type="text" id="texto" value="Hola mundo JavaScript">
+        </div>
+        
+        <div class="input-group">
+            <label for="inicio">Posición inicial:</label>
+            <input type="number" id="inicio" value="0" min="0">
+        </div>
+        
+        <div class="input-group">
+            <label for="cantidad">Cantidad de caracteres:</label>
+            <input type="number" id="cantidad" value="4" min="1">
+        </div>
+        
+        <button onclick="extraerCaracteres()">Extraer Caracteres</button>
+        
+        <div class="result">
+            <strong>Resultado:</strong>
+            <div id="resultado">Aquí aparecerá el resultado</div>
+        </div>
+    </div>
+
+    <script>
+
+        function extraerCaracteres() {
+
+            var texto = document.getElementById("texto").value;
+            var inicio = parseInt(document.getElementById("inicio").value);
+            var cantidad = parseInt(document.getElementById("cantidad").value);
+            
+            var resultado = texto.substring(inicio, inicio + cantidad);
+            
+            document.getElementById("resultado").textContent = resultado;
+        }
+        
+        window.onload = extraerCaracteres;
+    </script>
+</body>
+</html>
