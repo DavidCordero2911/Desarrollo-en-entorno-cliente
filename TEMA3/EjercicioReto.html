@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego de Adivinanza de Contraseña</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .jugador {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        input[type="text"] {
+            width: 200px;
+            padding: 5px;
+            margin: 5px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .resultado {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #e8f5e9;
+            border-radius: 4px;
+        }
+        .letra-acertada {
+            color: green;
+            font-weight: bold;
+        }
+        .letra-fallada {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Juego de Adivinanza de Contraseña</h1>
+        
+        <div style="margin-bottom: 20px;">
+            <p><strong>Contraseña guardada:</strong> "L4ultimavezKtelod1go"</p>
+            <p><strong>Reglas:</strong></p>
+            <ul>
+                <li>Vocal acertada = 1 punto</li>
+                <li>Consonante acertada = 2 puntos</li>
+                <li>Número acertado = 3 puntos</li>
+                <li>Debe coincidir exactamente (mayúscula/minúscula)</li>
+            </ul>
+        </div>
+
+        <!-- Jugador 1 -->
+        <div class="jugador">
+            <h3>Jugador 1</h3>
+            <input type="text" id="intento1" placeholder="Escribe tu intento">
+            <button onclick="evaluarIntento(1)">Evaluar</button>
+            <div id="resultado1" class="resultado"></div>
+        </div>
+
+        <!-- Jugador 2 -->
+        <div class="jugador">
+            <h3>Jugador 2</h3>
+            <input type="text" id="intento2" placeholder="Escribe tu intento">
+            <button onclick="evaluarIntento(2)">Evaluar</button>
+            <div id="resultado2" class="resultado"></div>
+        </div>
+
+        <!-- Jugador 3 -->
+        <div class="jugador">
+            <h3>Jugador 3</h3>
+            <input type="text" id="intento3" placeholder="Escribe tu intento">
+            <button onclick="evaluarIntento(3)">Evaluar</button>
+            <div id="resultado3" class="resultado"></div>
+        </div>
+
+        <button onclick="reiniciarJuego()" style="background-color: #2196F3;">Reiniciar Juego</button>
+    </div>
+
+    <script>
+        // Contraseña guardada en el sistema
+        const contraseña = "L4ultimavezKtelod1go";
+
+        function evaluarIntento(numJugador) {
+            // Obtener el intento del jugador
+            const inputId = "intento" + numJugador;
+            const resultadoId = "resultado" + numJugador;
+            const intento = document.getElementById(inputId).value;
+            
+            // Validar que se haya ingresado un intento
+            if (intento === "") {
+                alert("Por favor, escribe un intento");
+                return;
+            }
+
+            let puntuacionTotal = 0;
+            let letrasAcertadas = [];
+            let detalles = "";
+
+            // Evaluar cada letra del intento
+            for (let i = 0; i < intento.length; i++) {
+                const letraIntento = intento[i];
+                const letraContraseña = contraseña[i];
+                
+                // Verificar si la posición existe en la contraseña
+                if (i < contraseña.length && letraIntento === letraContraseña) {
+                    // Calcular puntos según el tipo de carácter
+                    let puntos = 0;
+                    
+                    if (esVocal(letraIntento)) {
+                        puntos = 1;
+                    } else if (esConsonante(letraIntento)) {
+                        puntos = 2;
+                    } else if (esNumero(letraIntento)) {
+                        puntos = 3;
+                    }
+                    
+                    puntuacionTotal += puntos;
+                    letrasAcertadas.push(letraIntento);
+                    detalles += `<span class="letra-acertada">${letraIntento}=${puntos}p</span> `;
+                } else {
+                    detalles += `<span class="letra-fallada">${letraIntento}=0</span> `;
+                }
+            }
+
+            // Mostrar resultados
+            const resultadoHTML = `
+                <p><strong>Intento:</strong> ${intento}</p>
+                <p><strong>Puntuación:</strong> ${puntuacionTotal} puntos</p>
+                <p><strong>Letras acertadas:</strong> ${letrasAcertadas.join(', ')}</p>
+                <p><strong>Detalles:</strong> ${detalles}</p>
+            `;
+            
+            document.getElementById(resultadoId).innerHTML = resultadoHTML;
+        }
+
+        function esVocal(caracter) {
+            const vocales = "aeiouAEIOUáéíóúÁÉÍÓÚ";
+            return vocales.includes(caracter);
+        }
+
+        function esConsonante(caracter) {
+            const consonantes = "bcdfghjklmnñpqrstvwxyzBCDFGHJKLMNÑPQRSTVWXYZ";
+            return consonantes.includes(caracter);
+        }
+
+        function esNumero(caracter) {
+            return caracter >= '0' && caracter <= '9';
+        }
+
+        function reiniciarJuego() {
+            // Limpiar todos los inputs y resultados
+            for (let i = 1; i <= 3; i++) {
+                document.getElementById("intento" + i).value = "";
+                document.getElementById("resultado" + i).innerHTML = "";
+            }
+        }
+    </script>
+</body>
+</html>
