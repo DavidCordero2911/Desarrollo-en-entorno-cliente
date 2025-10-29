@@ -156,6 +156,40 @@
             border: 1px dashed #475569;
         }
         
+        /* Estilos para las fases del Tema 3 */
+        .phase-section {
+            margin-bottom: 1.5rem;
+        }
+        
+        .phase-title {
+            background: linear-gradient(135deg, rgba(58, 12, 163, 0.7) 0%, rgba(67, 97, 238, 0.7) 100%);
+            color: white;
+            padding: 0.8rem 1.2rem;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+        
+        .phase-title::before {
+            content: "▶";
+            margin-right: 10px;
+            font-size: 0.8rem;
+            transition: transform 0.3s;
+        }
+        
+        .phase-title.active::before {
+            transform: rotate(90deg);
+        }
+        
+        .phase-exercises {
+            padding-left: 1rem;
+            transition: all 0.3s ease;
+        }
+        
         @media (max-width: 768px) {
             .topics-grid {
                 grid-template-columns: 1fr;
@@ -221,20 +255,32 @@
             <div class="topic-card">
                 <div class="topic-header">TEMA 3</div>
                 <div class="exercises-list">
-                    <div class="exercise-item">
-                        <a href="TEMA3\EjercicioReto.html" target="_blank">EjercicioReto</a>
+                    <!-- Fase 3 -->
+                    <div class="phase-section">
+                        <div class="phase-title">Fase 3: EjerciciosJS I </div>
+                        <div class="phase-exercises">
+                            <div class="exercise-item">
+                                <a href="TEMA3/ejercicio3.4.html" target="_blank">Ejercicio 3.4</a>
+                            </div>
+                            <div class="exercise-item">
+                                <a href="TEMA3/ejercicio3.6.html" target="_blank">Ejercicio 3.6</a>
+                            </div>
+                            <div class="exercise-item">
+                                <a href="TEMA3/ejercicio3.9.html" target="_blank">Ejercicio 3.9</a>
+                            </div>
+                            <div class="exercise-item">
+                                <a href="TEMA3/ejercicio.3.14.html" target="_blank">Ejercicio 3.14</a>
+                            </div>
+                        </div>
                     </div>
-                    <div class="exercise-item">
-                        <a href="TEMA3\Ejercicio3.4.html" target="_blank">Ejercicio3.4</a>
-                    </div>
-                    <div class="exercise-item">
-                        <a href="TEMA3\Ejercicio3.6.html" target="_blank">Ejercicio3.6</a>
-                    </div>
-                    <div class="exercise-item">
-                        <a href="TEMA3\Ejercicio3.9.html" target="_blank">Ejercicio3.9</a>
-                    </div>
-                    <div class="exercise-item">
-                        <a href="TEMA3\Ejercicio3.14.html" target="_blank">Ejercicio3.14</a>
+                    <!-- Fase 4 -->
+                    <div class="phase-section">
+                        <div class="phase-title">Fase 4: EjerciciosJS II</div>
+                        <div class="phase-exercises">
+                            <div class="exercise-item">
+                                <a href="TEMA3\EjercicioReto.html" target="_blank">Ejercicio Reto</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -274,10 +320,33 @@
     <footer>
         <p>Desarrollo Web en Entorno Cliente - Organización de ejercicios</p>
     </footer>
+
+    <script>
+        // Script para hacer las fases expandibles/colapsables
+        document.addEventListener('DOMContentLoaded', function() {
+            const phaseTitles = document.querySelectorAll('.phase-title');
+            
+            phaseTitles.forEach(title => {
+                title.addEventListener('click', function() {
+                    const phaseExercises = this.nextElementSibling;
+                    
+                    // Alternar la clase active para la animación del indicador
+                    this.classList.toggle('active');
+                    
+                    // Alternar la visibilidad de los ejercicios
+                    if (phaseExercises.style.maxHeight) {
+                        phaseExercises.style.maxHeight = null;
+                    } else {
+                        phaseExercises.style.maxHeight = phaseExercises.scrollHeight + "px";
+                    }
+                });
+                
+                // Inicialmente expandir todas las fases
+                const phaseExercises = title.nextElementSibling;
+                phaseExercises.style.maxHeight = phaseExercises.scrollHeight + "px";
+                title.classList.add('active');
+            });
+        });
+    </script>
 </body>
-
 </html>
-
-
-
-
