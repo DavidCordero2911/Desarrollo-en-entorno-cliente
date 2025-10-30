@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contador de Subcadenas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e8f5e9;
+            border-radius: 4px;
+            border-left: 4px solid #4CAF50;
+        }
+        .code {
+            background-color: #f4f4f4;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 20px;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+        .example {
+            background-color: #fff3e0;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 15px;
+            border-left: 4px solid #FF9800;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Contador de Subcadenas</h1>
+        
+        <div class="input-group">
+            <label for="cadenaPrincipal">Cadena principal:</label>
+            <input type="text" id="cadenaPrincipal">
+        </div>
+        
+        <div class="input-group">
+            <label for="subcadena">Subcadena a buscar:</label>
+            <input type="text" id="subcadena">
+        </div>
+        
+        <button onclick="contarSubcadenaDesdeInput()">Contar Apariciones</button>
+        
+        <div class="result">
+            <strong>Resultado:</strong>
+            <div id="resultado"></div>
+        </div>
+        </div>
+    </div>
+
+    <script>
+        function contarSubcadena(cadena, subcadena) {
+            let contador = 0;
+            let posicion = 0;
+            
+            while (true) {
+            
+                posicion = cadena.indexOf(subcadena, posicion);
+                
+                if (posicion === -1) {
+                    break;
+                }
+                
+                contador++;
+                posicion += subcadena.length;
+            }
+            
+            return contador;
+        }
+        
+        function contarSubcadenaDesdeInput() {
+            const cadena = document.getElementById('cadenaPrincipal').value;
+            const subcadena = document.getElementById('subcadena').value;
+            
+            if (cadena === "" || subcadena === "") {
+                alert("Por favor, completa ambos campos");
+                return;
+            }
+            
+            const resultado = contarSubcadena(cadena, subcadena);
+            
+            let mensaje = `La subcadena "${subcadena}" aparece ${resultado} vez(es) en la cadena.`;
+            
+            if (resultado > 0) {
+                mensaje += "<br><strong>Posiciones encontradas:</strong> ";
+                let posiciones = [];
+                let posicion = 0;
+                
+                while (true) {
+                    posicion = cadena.indexOf(subcadena, posicion);
+                    if (posicion === -1) break;
+                    posiciones.push(posicion + 1); // +1 para mostrar posición humana
+                    posicion += subcadena.length;
+                }
+                
+                mensaje += posiciones.join(", ");
+            }
+            
+            document.getElementById('resultado').innerHTML = mensaje;
+        }
+    </script>
+</body>
+</html>
