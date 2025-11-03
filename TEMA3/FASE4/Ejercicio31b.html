@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Eliminar un elemento de una matriz</title>
+</head>
+<body>
+    <h1>Eliminar un elemento específico de una matriz</h1>
+
+    <p>Introduce los números separados por comas (por ejemplo: 2,4,5,9):</p>
+    <input type="text" id="entradaArray">
+
+    <p>Introduce el valor que quieras eliminar:</p>
+    <input type="text" id="valorEliminar">
+
+    <button onclick="eliminarElemento()">Eliminar</button>
+
+    <p id="resultado"></p>
+
+    <script>
+        function eliminarElemento() {
+            var texto = document.getElementById("entradaArray").value;
+            var valor = document.getElementById("valorEliminar").value;
+
+            // Convertimos el texto en array y el valor a número
+            var array = texto.split(",");
+            var nuevoArray = [];
+
+            // Recorremos el array y copiamos los valores que sean distintos
+            for (var i = 0; i < array.length; i++) {
+                if (array[i].trim() != valor) {
+                    nuevoArray.push(array[i].trim());
+                }
+            }
+
+            // Mostramos el nuevo array sin el elemento eliminado
+            document.getElementById("resultado").innerHTML = "[" + nuevoArray.join(", ") + "]";
+        }
+    </script>
+</body>
+</html>

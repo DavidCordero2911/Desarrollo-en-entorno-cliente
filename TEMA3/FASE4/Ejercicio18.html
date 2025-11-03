@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Producto de valores en una matriz</title>
+</head>
+<body>
+    <h1>Producto de los valores en una matriz</h1>
+
+    <p>Introduce números separados por comas (por ejemplo: 2,3,4):</p>
+
+    <input type="text" id="entradaArray">
+    <button onclick="calcularProducto()">Calcular producto</button>
+
+    <p id="resultado"></p>
+
+    <script>
+        function calcularProducto() {
+            var texto = document.getElementById("entradaArray").value;
+            var array = texto.split(",");
+
+            var producto = 1;
+
+            for (var i = 0; i < array.length; i++) {
+                producto = producto * Number(array[i]);
+            }
+
+            document.getElementById("resultado").innerHTML = producto;
+        }
+    </script>
+</body>
+</html>

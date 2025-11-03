@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Unir elementos de una matriz</title>
+</head>
+<body>
+    <h1>Unir todos los elementos de una matriz en una cadena</h1>
+
+    <p>Introduce los elementos separados por comas (por ejemplo: rojo,verde,azul):</p>
+
+    <input type="text" id="entradaArray">
+    <button onclick="unirElementos()">Unir elementos</button>
+
+    <p id="resultado"></p>
+
+    <script>
+        function unirElementos() {
+            var texto = document.getElementById("entradaArray").value;
+            var array = texto.split(",");
+
+            // Unir los elementos en una sola cadena
+            var cadena = array.join("");
+
+            document.getElementById("resultado").innerHTML = cadena;
+        }
+    </script>
+</body>
+</html>

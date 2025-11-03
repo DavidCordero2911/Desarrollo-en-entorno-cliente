@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Ejercicio - Valor más alto en una matriz</title>
+</head>
+<body>
+    <h1>Ejercicio - Valor más alto en una matriz</h1>
+
+    <p>Introduce números separados por comas (por ejemplo: 5,10,2,8,15):</p>
+    <input type="text" id="entradaArray">
+    <button onclick="encontrarMayor()">Buscar valor más alto</button>
+
+    <p id="resultado"></p>
+
+    <script>
+        function encontrarMayor() {
+            var texto = document.getElementById("entradaArray").value;
+            var array = texto.split(",");
+
+            // Convertir a números
+            for (var i = 0; i < array.length; i++) {
+                array[i] = Number(array[i]);
+            }
+
+            // Validar entrada
+            if (array.length === 0 || array.some(isNaN)) {
+                document.getElementById("resultado").innerHTML = "Entrada no válida.";
+                return;
+            }
+
+            // Encontrar el mayor
+            var mayor = array[0];
+            for (var i = 1; i < array.length; i++) {
+                if (array[i] > mayor) {
+                    mayor = array[i];
+                }
+            }
+
+            // Mostrar solo el valor mayor
+            document.getElementById("resultado").innerHTML = mayor;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Diferencia entre dos fechas</title>
+</head>
+<body>
+    <h1>Diferencia entre dos fechas en días</h1>
+
+    <p>Escribe dos fechas (formato: AAAA-MM-DD):</p>
+
+    <input type="text" id="fecha1" placeholder="Primera fecha">
+    <input type="text" id="fecha2" placeholder="Segunda fecha">
+    <button onclick="calcular()">Calcular diferencia</button>
+
+    <p id="resultado"></p>
+
+    <script>
+        function calcular() {
+            var f1 = new Date(document.getElementById("fecha1").value);
+            var f2 = new Date(document.getElementById("fecha2").value);
+
+            // Calculamos la diferencia en días de forma sencilla
+            var dias = (f2 - f1) / (1000 * 60 * 60 * 24);
+
+            // Mostramos el valor absoluto (sin signo negativo)
+            document.getElementById("resultado").innerHTML = Math.abs(dias) + " dias";
+        }
+    </script>
+</body>
+</html>

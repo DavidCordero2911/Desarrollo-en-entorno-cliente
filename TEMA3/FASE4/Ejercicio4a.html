@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Ejercicio 4a - Suma de una matriz</title>
+</head>
+<body>
+    <h1>Ejercicio 4a - Suma de una matriz</h1>
+
+    <p>Introduce números separados por comas (por ejemplo: 1,2,3,4,5):</p>
+    <input type="text" id="entradaArray">
+    <button onclick="calcularSuma()">Calcular suma</button>
+
+    <p id="resultado"></p>
+
+    <script>
+        function calcularSuma() {
+            var texto = document.getElementById("entradaArray").value;
+
+            var array = texto.split(",");
+
+            var suma = 0;
+
+            for (var i = 0; i < array.length; i++) {
+                suma += Number(array[i]);
+            }
+
+            document.getElementById("resultado").innerHTML = 
+                "La suma de los elementos es: " + suma;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Número más alto de tres números</title>
+</head>
+<body>
+    <h1>Número más alto de tres números</h1>
+
+    <p>Introduce tres números:</p>
+
+    <input type="text" id="num1" placeholder="Primer número">
+    <input type="text" id="num2" placeholder="Segundo número">
+    <input type="text" id="num3" placeholder="Tercer número">
+    <button onclick="numeroMayor()">Calcular mayor</button>
+
+    <p id="resultado"></p>
+
+    <script>
+        function numeroMayor() {
+            var n1 = Number(document.getElementById("num1").value);
+            var n2 = Number(document.getElementById("num2").value);
+            var n3 = Number(document.getElementById("num3").value);
+
+            var mayor;
+
+            if (n1 > n2 && n1 > n3) {
+                mayor = n1;
+            } else if (n2 > n1 && n2 > n3) {
+                mayor = n2;
+            } else {
+                mayor = n3;
+            }
+
+            document.getElementById("resultado").innerHTML = mayor;
+        }
+    </script>
+</body>
+</html>

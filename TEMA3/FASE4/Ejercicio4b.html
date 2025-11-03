@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Ejercicio - Nombre del mes y días</title>
+</head>
+<body>
+    <h1>Ejercicio - Nombre del mes y número de días</h1>
+
+    <p>Introduce el número del mes (1-12) y el año:</p>
+    
+    <label>Mes:</label>
+    <input type="number" id="mes" min="1" max="12">
+    
+    <label>Año:</label>
+    <input type="number" id="anio">
+    
+    <button onclick="mostrarMes()">Mostrar información</button>
+
+    <p id="resultado"></p>
+
+    <script>
+        function mostrarMes() {
+            var mes = Number(document.getElementById("mes").value);
+            var anio = Number(document.getElementById("anio").value);
+
+            // Array con los nombres de los meses
+            var nombresMeses = [
+                "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+                "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+            ];
+
+            // Validar entrada
+            if (mes < 1 || mes > 12 || isNaN(mes) || isNaN(anio)) {
+                document.getElementById("resultado").innerHTML = "Por favor, introduce un mes (1-12) y un año válidos.";
+                return;
+            }
+
+            // Obtener el nombre del mes
+            var nombreMes = nombresMeses[mes - 1];
+            // Calcular el número de días del mes usando el objeto Date
+            var diasEnMes = new Date(anio, mes, 0).getDate();
+
+            // Mostrar resultado
+            document.getElementById("resultado").innerHTML = 
+                "El mes de <strong>" + nombreMes + "</strong> del año " + anio + 
+                " tiene <strong>" + diasEnMes + "</strong> días.";
+        }
+    </script>
+</body>
+</html>

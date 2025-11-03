@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Elemento más frecuente de una matriz</title>
+</head>
+<body>
+    <h1>Elemento más frecuente de una matriz</h1>
+
+    <p>Introduce los elementos separados por comas (por ejemplo: 1,2,2,3,3,3,4):</p>
+
+    <input type="text" id="entradaArray">
+    <button onclick="masFrecuente()">Buscar más frecuente</button>
+
+    <p id="resultado"></p>
+
+    <script>
+        function masFrecuente() {
+            var texto = document.getElementById("entradaArray").value;
+            var array = texto.split(",");
+
+            var contador = {};
+            var maxElemento = array[0];
+            var maxRepeticiones = 0;
+
+            for (var i = 0; i < array.length; i++) {
+                var valor = array[i].trim();
+
+                if (contador[valor]) {
+                    contador[valor]++;
+                } else {
+                    contador[valor] = 1;
+                }
+
+                if (contador[valor] > maxRepeticiones) {
+                    maxRepeticiones = contador[valor];
+                    maxElemento = valor;
+                }
+            }
+
+            document.getElementById("resultado").innerHTML = maxElemento;
+        }
+    </script>
+</body>
+</html>
