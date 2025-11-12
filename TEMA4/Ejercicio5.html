@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Mostrar URL de imágenes al pasar el ratón</title>
+</head>
+<body>
+
+  <h2>Ejercicio: Mostrar la URL de cada imagen al pasar el ratón</h2>
+
+  <!-- Seleccionamos la imagenes que queremos -->
+  <img src="Julian_pastor1.webp" alt="Imagen 1" width="150">
+  <img src="capitan_salami.jpg" alt="Imagen 2" width="150">
+  <img src="Voy a ser papa.webp" alt="Imagen 3" width="150">
+
+  <!-- Cuadro donde se mostrará la URL -->
+  <p id="info" style="font-weight: bold; margin-top: 20px;">Pasa el ratón por una imagen</p>
+
+  <script>
+    // Seleccionamos todas las imágenes
+    const imagenes = document.querySelectorAll("img");
+    const info = document.getElementById("info");
+
+    // Recorremos cada imagen para asignar el evento
+    imagenes.forEach(function(img) {
+      // Cuando el ratón pasa por encima
+      img.addEventListener("mouseover", function() {
+        info.textContent = "URL de la imagen: " + img.src;
+      });
+
+      // Cuando el ratón sale de la imagen
+      img.addEventListener("mouseout", function() {
+        info.textContent = "Pasa el ratón por una de las imagenes";
+      });
+    });
+  </script>
+
+</body>
+</html>

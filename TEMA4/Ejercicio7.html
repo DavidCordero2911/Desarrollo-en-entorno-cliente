@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Mover imagen con el teclado</title>
+  <style>
+    body {
+      height: 100vh;
+      overflow: hidden; /* Evita las barras de scroll */
+      position: relative;
+    }
+    img {
+      position: absolute;
+      top: 100px;
+      left: 100px;
+      width: 100px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Ejercicio: Mover la imagen con las flechas del teclado</h2>
+
+  <img id="imagen" src="Voy a ser papa.webp" alt="Imagen a mover">
+
+  <script>
+    const imagen = document.getElementById("imagen");
+
+    // Posición inicial
+    let x = 100;
+    let y = 100;
+
+    // Escuchamos el evento de tecla presionada
+    document.addEventListener("keydown", function(evento) {
+      const paso = 10; // píxeles que se moverá cada vez
+
+      // Detectar qué tecla se ha pulsado
+      switch (evento.key) {
+        case "ArrowUp":    // Flecha arriba
+        case "8":          // Numpad 8
+          y -= paso;
+          break;
+        case "ArrowDown":  // Flecha abajo
+        case "2":          // Numpad 2
+          y += paso;
+          break;
+        case "ArrowLeft":  // Flecha izquierda
+        case "4":          // Numpad 4
+          x -= paso;
+          break;
+        case "ArrowRight": // Flecha derecha
+        case "6":          // Numpad 6
+          x += paso;
+          break;
+      }
+
+      // Actualizamos la posición
+      imagen.style.left = x + "px";
+      imagen.style.top = y + "px";
+    });
+  </script>
+
+</body>
+</html>

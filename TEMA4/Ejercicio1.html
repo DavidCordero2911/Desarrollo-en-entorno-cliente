@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Cambiar imagen al hacer click</title>
+</head>
+<body>
+
+  <h2>Ejercicio: Cambiar imagen al mantener pulsado el click</h2>
+
+  <!-- Aqui colocaremos la imagen inicial que se veria al iniciar la página -->
+  <img id="miImagen" src="Julian_pastor1.webp" alt="Imagen 1" width="300">
+
+  <script>
+    // Creamos una constante y seleccionamos la imagen
+    const imagen = document.getElementById("miImagen");
+
+    // Cambia la imagen mientras se mantiene pulsado el click
+    imagen.addEventListener("mousedown", function() {
+      imagen.src = "capitan_salami.jpg"; // Cambia a otra imagen
+    });
+
+    // Cuando se suelta el click, vuelve a la imagen original
+    imagen.addEventListener("mouseup", function() {
+      imagen.src = "Julian_pastor1.webp";
+    });
+
+    // También por si el usuario mueve el ratón fuera sin soltar
+    imagen.addEventListener("mouseleave", function() {
+      imagen.src = "Julian_pastor1.webp";
+    });
+  </script>
+
+</body>
+</html>

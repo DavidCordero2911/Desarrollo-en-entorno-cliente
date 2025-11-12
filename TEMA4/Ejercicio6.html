@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Detectar tecla pulsada</title>
+</head>
+<body>
+
+  <h2>Ejercicio: Mostrar la tecla pulsada</h2>
+
+  <!-- Cuadro donde se mostrará la información -->
+  <p id="mensaje" style="font-size: 18px; font-weight: bold;">Pulsa una tecla...</p>
+
+  <script>
+    // Seleccionamos el elemento donde mostraremos el mensaje
+    const mensaje = document.getElementById("mensaje");
+
+    // Escuchamos el evento keydown (cuando se pulsa una tecla)
+    document.addEventListener("keydown", function(evento) {
+      // Obtenemos la tecla que se a pulsado
+      let texto = "Has pulsado la tecla: " + evento.key;
+
+      // Comprobamos si se ha pulsado con otras teclas especiales
+      if (evento.altKey) {
+        texto;
+      }
+      if (evento.shiftKey) {
+        texto;
+      }
+      if (evento.ctrlKey) {
+        texto;
+      }
+
+      // Mostramos el resultado de cual tecla se ha pulsado
+      mensaje.textContent = texto;
+    });
+  </script>
+
+</body>
+</html>

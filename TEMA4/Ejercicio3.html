@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Deshabilitar botón derecho</title>
+</head>
+<body>
+
+  <h2>Ejercicio: Deshabilitar el botón derecho del ratón</h2>
+
+  <p>Prueba a hacer clic derecho en cualquier parte de esta página.</p>
+
+  <script>
+    // Bloqueamos el botón derecho del ratón
+    document.addEventListener("contextmenu", function(evento) {
+      evento.preventDefault(); // Evita que se abra el menú
+      alert("El botón derecho está deshabilitado, no lo uses que no funciona tete");
+    });
+  </script>
+
+</body>
+</html>

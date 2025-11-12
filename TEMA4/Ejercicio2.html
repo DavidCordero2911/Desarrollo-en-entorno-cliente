@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Cambiar color según eventos</title>
+</head>
+<body>
+
+  <h2>Ejercicio: Cambiar color del cuadro según eventos</h2>
+
+  <!-- Creamos con un div el cuadrado en el que se realizara el script -->
+  <div id="cuadro" 
+       style="width: 300px; height: 100px; border: 1px solid black; text-align: center; line-height: 100px;">
+    Cuadro de mensaje
+  </div>
+
+  <script>
+    // Creamos una constante y seleccionamos el cuadro
+    const cuadro = document.getElementById("cuadro");
+
+    // Al pulsar botón del ratón → amarillo
+    document.addEventListener("mousedown", function() {
+      cuadro.style.backgroundColor = "#FFFF00";
+    });
+
+    // Al pulsar una tecla → azul
+    document.addEventListener("keydown", function() {
+      cuadro.style.backgroundColor = "#CCE6FF";
+    });
+
+    // Al mover el ratón → blanco
+    document.addEventListener("mousemove", function() {
+      cuadro.style.backgroundColor = "white";
+    });
+  </script>
+
+</body>
+</html>

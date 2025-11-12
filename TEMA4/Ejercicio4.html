@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Detectar botón del ratón</title>
+</head>
+<body>
+
+  <h2>Ejercicio: Detectar si se pulsa el botón izquierdo o derecho</h2>
+
+  <p>Haz clic en cualquier parte de la pantalla y el script te dirá qué botón has pulsado.</p>
+
+  <script>
+    // Detectamos el clic en cualquier parte del documento
+    document.addEventListener("mousedown", function(evento) {
+      // 0 = botón izquierdo, 2 = botón derecho
+      if (evento.button === 0) {
+        alert("Has pulsado el botón IZQUIERDO del ratón ");
+      } else if (evento.button === 2) {
+        alert("Has pulsado el botón DERECHO del ratón ");
+      }
+    });
+
+    // Con esto evitamos que aparezca el menú del clic derecho
+    document.addEventListener("contextmenu", function(evento) {
+      evento.preventDefault();
+    });
+  </script>
+
+</body>
+</html>
