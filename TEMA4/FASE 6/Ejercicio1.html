@@ -1,0 +1,74 @@
+<!--Crea una función crearUsuario que reciba un objeto con nombre, edad y pais.
+Si algún dato falta, usar valores por defecto.
+Debe devolver una cadena: "Juan, 20 años, España".-->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicio - crearUsuario</title>
+    <style>
+        body { font-family: Arial; margin: 40px; }
+        input, button { padding: 8px; margin: 5px; font-size: 16px; }
+        #resultado { margin-top: 20px; font-size: 20px; color: blue; }
+    </style>
+</head>
+<body>
+    <h1>Ejercicio: función crearUsuario</h1>
+    <p>Rellena los campos que quieras. Si dejas alguno vacío se usarán los valores por defecto:</p>
+    <ul>
+        <li>Nombre por defecto: Juan</li>
+        <li>Edad por defecto: 20</li>
+        <li>País por defecto: España</li>
+    </ul>
+
+    <label>Nombre: </label><br>
+    <input type="text" id="nombre" placeholder="Juan"><br><br>
+
+    <label>Edad: </label><br>
+    <input type="number" id="edad" placeholder="20"><br><br>
+
+    <label>País: </label><br>
+    <input type="text" id="pais" placeholder="España"><br><br>
+
+    <button onclick="mostrarUsuario()">Crear usuario</button>
+
+    <div id="resultado"></div>
+
+    <script>
+        function crearUsuario(datos) {
+            //Aqui le damos a cada variable un valor por defecto para que 
+            let nombre = datos.nombre || "desconocido";
+            let edad   = datos.edad   || 20;
+            let pais   = datos.pais   || "desconocido";
+
+            return nombre + ", " + edad + " años, " + pais;
+        }
+
+        function mostrarUsuario() {
+            // Recogemos lo que el usuario ha escrito guardado en las variables que hemos creado
+            let nom = document.getElementById("nombre").value.trim();
+            let ed  = document.getElementById("edad").value;
+            let pa  = document.getElementById("pais").value.trim();
+
+            // Convertimos edad a número si hay algo escrito
+            if (ed !== "") {
+                ed = Number(ed);
+            } else {
+                ed = ""; // lo dejamos vacío para que luego use el valor por defecto
+            }
+
+            // Creamos el objeto que le pasamos a la función para que guarde la información de las variables anteriores
+            let usuario = {
+                nombre: nom,
+                edad:   ed,
+                pais:   pa
+            };
+
+            //Mostramos el resultado
+            let frase = crearUsuario(usuario);
+            document.getElementById("resultado").innerHTML = frase;
+        }
+    </script>
+</body>
+</html>

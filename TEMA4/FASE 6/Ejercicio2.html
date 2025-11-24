@@ -1,0 +1,102 @@
+
+<!--Crea una función operar que reciba dos números y una función que indique la
+operación a realizar (suma, resta, multiplicación,suma_mul).
+Ejemplo
+operar(2,3,suma)
+5
+operar(2,3,sumamul)
+5+6=11
+Primero hace una suma y luego realiza una multiplicación dando como resultado la
+suma de ambas operaciones.-->
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicio - función operar</title>
+    <style>
+        body { font-family: Arial; margin: 40px; }
+        input, button, select { padding: 8px; margin: 5px; font-size: 16px; }
+        #resultado { margin-top: 20px; font-size: 22px; color: green; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>Ejercicio: función operar()</h1>
+    <p>Elige dos números y una operación:</p>
+
+    <label>Número 1:</label><br>
+    <input type="number" id="num1" value="2"><br><br>
+
+    <label>Número 2:</label><br>
+    <input type="number" id="num2" value="3"><br><br>
+
+    <label>Operación:</label><br>
+    <select id="operacion">
+        <option value="suma">Suma</option>
+        <option value="resta">Resta</option>
+        <option value="multiplicacion">Multiplicación</option>
+        <option value="sumamul">Suma + Multiplicación</option>
+    </select><br><br>
+
+    <button onclick="calcular()">Calcular</button>
+
+    <div id="resultado"></div>
+
+    <script>
+        //Creamos la funcion donde le daremos los valores a las operaciones
+        function suma(a, b) {
+            return a + b;
+        }
+
+        function resta(a, b) {
+            return a - b;
+        }
+
+        function multiplicacion(a, b) {
+            return a * b;
+        }
+
+        function sumamul(a, b) {
+            let resultadoSuma = suma(a, b);          
+            let resultadoMul  = multiplicacion(a, b); 
+            return resultadoSuma + " + " + resultadoMul + " = " + (resultadoSuma + resultadoMul);
+        }
+
+        //Creamos la funcion de operar para que use los numeros que hemos guardado en nuestras variables
+        //Y en funcion de lo que queramos hacer elija la operación que nosotros queremos
+        function operar(numero1, numero2, operacion) {
+            if (operacion === suma) {
+                return suma(numero1, numero2);
+            }
+            if (operacion === resta) {
+                return resta(numero1, numero2);
+            }
+            if (operacion === multiplicacion) {
+                return multiplicacion(numero1, numero2);
+            }
+            if (operacion === sumamul) {
+                return sumamul(numero1, numero2);
+            }
+        }
+
+        //Creamos un boton para que cuando lo pulsemos nos realice la operación que hayamos elegido previamente
+        function calcular() {
+            let n1 = Number(document.getElementById("num1").value);
+            let n2 = Number(document.getElementById("num2").value);
+            let op = document.getElementById("operacion").value;
+
+            let funcionOperacion;
+
+            if (op === "suma")          funcionOperacion = suma;
+            else if (op === "resta")    funcionOperacion = resta;
+            else if (op === "multiplicacion") funcionOperacion = multiplicacion;
+            else if (op === "sumamul")  funcionOperacion = sumamul;
+
+            let resultado = operar(n1, n2, funcionOperacion);
+
+            document.getElementById("resultado").innerHTML = resultado;
+        }
+    </script>
+</body>
+</html>

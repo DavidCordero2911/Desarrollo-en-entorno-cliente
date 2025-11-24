@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Recursividad - Listar archivos</title>
+</head>
+<body>
+    <h1>Ejercicio 1: Listar todos los archivos (recursivo)</h1>
+    <button onclick="mostrar()">Mostrar archivos</button>
+    <p id="resultado"></p>
+
+    <script>
+        const fs = {
+            carpeta1: {
+                archivo1: "contenido1",
+                archivo2: "contenido2",
+                subcarpeta: {
+                    archivo3: "contenido3"
+                }
+            },
+            carpeta2: {
+                archivo4: "contenido4"
+            }
+        };
+
+        // Función recursiva que devuelve un array con todos los nombres de archivos
+        function listarArchivos(obj) {
+            let archivos = [];  // aquí guardaremos los nombres
+
+            for (let clave in obj) {
+                let valor = obj[clave];
+
+                // Si el valor es un string → es un archivo
+                if (typeof valor === "string") {
+                    archivos.push(clave);  // añadimos el nombre del archivo
+                }
+                // Si el valor es un objeto → es una carpeta → llamamos otra vez a la función
+                else if (typeof valor === "object" && valor !== null) {
+                    // Concatenamos lo que devuelve la función dentro de la subcarpeta
+                    let archivosDentro = listarArchivos(valor);
+                    archivos = archivos.concat(archivosDentro);
+                }
+            }
+
+            return archivos;
+        }
+
+        function mostrar() {
+            let todos = listarArchivos(fs);
+            document.getElementById("resultado").innerHTML = 
+                "Archivos encontrados: <b>[" + todos.join(", ") + "]</b>";
+            
+            console.log(todos); // → ["archivo1", "archivo2", "archivo3", "archivo4"]
+        }
+    </script>
+</body>
+</html>

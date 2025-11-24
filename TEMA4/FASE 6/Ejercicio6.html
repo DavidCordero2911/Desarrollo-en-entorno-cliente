@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Recursividad - Permutaciones</title>
+</head>
+<body>
+    <h1>Ejercicio 2: Todas las permutaciones</h1>
+    <button onclick="calcular()">Calcular permutaciones de [1,2,3]</button>
+    <pre id="salida"></pre>
+
+    <script>
+        // Función recursiva que devuelve todas las permutaciones de un array
+        function permutar(arr) {
+            let resultado = [];
+
+            // Caso base: si el array tiene solo 1 elemento → solo hay una permutación
+            if (arr.length === 1) {
+                return [arr];  // devolvemos [[elemento]]
+            }
+
+            // Recorremos cada elemento del array
+            for (let i = 0; i < arr.length; i++) {
+                let actual = arr[i];
+
+                // Creamos un array con los elementos restantes (sin el actual)
+                let restantes = arr.slice(0, i).concat(arr.slice(i + 1));
+
+                // Llamada recursiva con los elementos restantes
+                let permutacionesRestantes = permutar(restantes);
+
+                // Para cada permutación del resto, añadimos el elemento actual al principio
+                for (let j = 0; j < permutacionesRestantes.length; j++) {
+                    let permutacion = [actual].concat(permutacionesRestantes[j]);
+                    resultado.push(permutacion);
+                }
+            }
+
+            return resultado;
+        }
+
+        function calcular() {
+            let numeros = [1, 2, 3];
+            let todas = permutar(numeros);
+
+            let texto = "";
+            for (let i = 0; i < todas.length; i++) {
+                texto += "[" + todas[i].join(", ") + "]\n";
+            }
+
+            document.getElementById("salida").textContent = texto;
+            console.log(todas);
+        }
+    </script>
+</body>
+</html>

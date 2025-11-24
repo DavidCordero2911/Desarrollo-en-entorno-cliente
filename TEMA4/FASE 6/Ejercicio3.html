@@ -1,0 +1,75 @@
+<!--Escribe una función recursiva aplanar que convierta un array de arrays en un array
+plano.
+Ejemplo: [1, [2, [3, 4]], 5] → [1, 2, 3, 4, 5].-->
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicio - aplanar array (recursiva)</title>
+    <style>
+        body { font-family: Arial; margin: 40px; font-size: 18px; }
+        button { padding: 12px 20px; font-size: 18px; margin: 10px 5px; }
+        #resultado { margin-top: 30px; font-size: 24px; color: #0066cc; font-weight: bold; }
+        pre { background: #f4f4f4; padding: 15px; border-radius: 8px; }
+    </style>
+</head>
+<body>
+    <h1>Ejercicio: función recursiva aplanar()</h1>
+    <p>Convierte un array anidado en un array plano usando recursividad.</p>
+    
+    <p>Pulsa cada botón para probar un ejemplo:</p>
+    
+    <button onclick="probar1()">Ejemplo 1: [1, [2, 3], 4]</button>
+    <button onclick="probar2()">Ejemplo 2: [1, [2, [3, 4]], 5]</button>
+    <button onclick="probar3()">Ejemplo 3: [[[[1], 2], 3], 4]</button>
+
+    <div id="resultado"></div>
+
+    <script>
+        //Creamos la funion recursiva que nos permitar poder aplanar el codigo
+        function aplanar(array, resultado) {
+            // Si no nos pasan el segundo parámetro, creamos un array vacío
+            if (resultado === undefined) {
+                resultado = [];
+            }
+
+            // Recorremos cada elemento del array
+            for (let i = 0; i < array.length; i++) {
+                let elemento = array[i];
+
+                // Si el elemento es un array → llamamos otra vez a la función
+                if (Array.isArray(elemento)) {
+                    aplanar(elemento, resultado);  // recursividad
+                } else {
+                    // Si no es array, lo añadimos al resultado
+                    resultado.push(elemento);
+                }
+            }
+
+            return resultado;
+        }
+
+        //En mi caso he creado funciones de prueba para cada uno de los ejemplos.
+        function probar1() {
+            let arr = [1, [2, 3], 4];
+            let plano = aplanar(arr);
+            document.getElementById("resultado").innerHTML = "Original: " + JSON.stringify(arr) + "<br>→ Aplanado: <strong>" + plano + "</strong>";
+        }
+
+        function probar2() {
+            let arr = [1, [2, [3, 4]], 5];
+            let plano = aplanar(arr);
+            document.getElementById("resultado").innerHTML = "Original: " + JSON.stringify(arr) + "<br>→ Aplanado: <strong>" + plano + "</strong>";
+        }
+
+        function probar3() {
+            let arr = [[[[1], 2], 3], 4];
+            let plano = aplanar(arr);
+            document.getElementById("resultado").innerHTML = "Original: " + JSON.stringify(arr) + "<br>→ Aplanado: <strong>" + plano + "</strong>";
+        }
+    </script>
+
+</body>
+</html>

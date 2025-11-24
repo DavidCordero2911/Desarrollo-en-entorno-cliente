@@ -1,0 +1,74 @@
+<!--Dado un objeto que representa un sistema de archivos con carpetas y archivos
+anidados como un árbol:
+const fs = {
+carpeta1: {
+archivo1: "contenido1",
+archivo2: "contenido2",
+subcarpeta: {
+archivo3: "contenido3"
+}
+},
+carpeta2: {
+archivo4: "contenido4"
+}
+};-->
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Ejercicio 4 - Ver contenido</title>
+</head>
+<body>
+    <h1>Ejercicio 4 - Ver contenido de archivo</h1>
+    <button onclick="verContenido()">Abrir archivo</button>
+
+    <script>
+        const fs = {
+            carpeta1: {
+                archivo1: "contenido1",
+                archivo2: "contenido2",
+                subcarpeta: {
+                    archivo3: "contenido3"
+                }
+            },
+            carpeta2: {
+                archivo4: "contenido4"
+            }
+        };
+
+        function verContenido() {
+            let nombre = prompt("¿Qué archivo quieres abrir? (ej: archivo1, archivo3, archivo4)");
+            
+            if (!nombre) return;
+
+            let encontrado = false;
+
+            for (let carpeta in fs) {
+                let contenido = fs[carpeta];
+
+                if (contenido[nombre] !== undefined) {
+                    alert("Contenido de " + nombre + ":\n\n" + contenido[nombre]);
+                    encontrado = true;
+                    break;
+                }
+
+                for (let subcarpeta in contenido) {
+                    if (typeof contenido[subcarpeta] === "object") {
+                        if (contenido[subcarpeta][nombre] !== undefined) {
+                            alert("Contenido de " + nombre + ":\n\n" + contenido[subcarpeta][nombre]);
+                            encontrado = true;
+                            break;
+                        }
+                    }
+                }
+                if (encontrado) break;
+            }
+
+            if (!encontrado) {
+                alert("Archivo no encontrado");
+            }
+        }
+    </script>
+</body>
+</html>
