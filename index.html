@@ -25,13 +25,18 @@
     footer { text-align:center; padding:2rem; margin-top:4rem; background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color:#94a3b8; border-top:1px solid rgba(255,255,255,0.05); }
     .empty-exercise { text-align:center; padding:1.5rem; color:#94a3b8; font-style:italic; background:rgba(30,41,59,0.5); border-radius:6px; border:1px dashed #475569; }
 
+    /* Acordeón de fases */
     .phase-section { margin-bottom:1.5rem; }
     .phase-title { background: linear-gradient(135deg, rgba(58,12,163,0.7) 0%, rgba(67,97,238,0.7) 100%); color:white; padding:0.8rem 1.2rem; border-radius:6px; margin-bottom:0.5rem; font-size:1.1rem; font-weight:600; display:flex; align-items:center; box-shadow:0 4px 6px rgba(0,0,0,0.2); cursor:pointer; user-select:none; }
     .phase-title::before { content:"▶"; margin-right:10px; font-size:0.8rem; transition: transform 0.3s; }
     .phase-title.active::before { transform:rotate(90deg); }
-    .phase-exercises { padding-left:1rem; max-height:0; overflow:hidden; transition: max-height 0.3s ease; }
+    .phase-exercises { max-height:0; overflow:hidden; transition: max-height 0.4s ease; }
 
-    @media (max-width:768px) { .topics-grid { grid-template-columns:1fr; } h1 { font-size:2.2rem; } .container { margin:1.5rem auto; } }
+    @media (max-width:768px) { 
+        .topics-grid { grid-template-columns:1fr; } 
+        h1 { font-size:2.2rem; } 
+        .container { margin:1.5rem auto; } 
+    }
 </style>
 </head>
 <body>
@@ -118,20 +123,22 @@
                         <div class="exercise-item"><a href="TEMA4/Ejercicio7.html" target="_blank">Ejercicio 7</a></div>
                     </div>
                 </div>
-               <div class="phase-title">Fase 6: EjerciciosJS - Funciones</div>
+
+                <div class="phase-section">
+                    <div class="phase-title">Fase 6: EjerciciosJS - Funciones</div>
                     <div class="phase-exercises">
-                        <div class="exercise-item"><a href="TEMA4/FASE6/jercicio1.html" target="_blank">Ejercicio 1</a></div>
-                        <div class="exercise-item"><a href="TEMA4/FASE6/jercicio2.html" target="_blank">Ejercicio 2</a></div>
-                        <div class="exercise-item"><a href="TEMA4/FASE6/jercicio3.html" target="_blank">Ejercicio 3</a></div>
-                        <div class="exercise-item"><a href="TEMA4/FASE6/jercicio4.html" target="_blank">Ejercicio 4</a></div>
-                        <div class="exercise-item"><a href="TEMA4/FASE6/jercicio5.html" target="_blank">Ejercicio 5</a></div>
-                        <div class="exercise-item"><a href="TEMA4/FASE6/jercicio6.html" target="_blank">Ejercicio 6</a></div>
+                        <div class="exercise-item"><a href="TEMA4/FASE6/ejercicio1.html" target="_blank">Ejercicio 1</a></div>
+                        <div class="exercise-item"><a href="TEMA4/FASE6/ejercicio2.html" target="_blank">Ejercicio 2</a></div>
+                        <div class="exercise-item"><a href="TEMA4/FASE6/ejercicio3.html" target="_blank">Ejercicio 3</a></div>
+                        <div class="exercise-item"><a href="TEMA4/FASE6/ejercicio4.html" target="_blank">Ejercicio 4</a></div>
+                        <div class="exercise-item"><a href="TEMA4/FASE6/ejercicio5.html" target="_blank">Ejercicio 5</a></div>
+                        <div class="exercise-item"><a href="TEMA4/FASE6/ejercicio6.html" target="_blank">Ejercicio 6</a></div>
                     </div>
-                </div>  
+                </div>
             </div>
         </div>
 
-        <!-- TEMA 5 -->
+        <!-- TEMA 5 y 6 -->
         <div class="topic-card">
             <div class="topic-header">TEMA 5</div>
             <div class="exercises-list">
@@ -139,7 +146,6 @@
             </div>
         </div>
 
-        <!-- TEMA 6 -->
         <div class="topic-card">
             <div class="topic-header">TEMA 6</div>
             <div class="exercises-list">
@@ -150,7 +156,7 @@
 </div>
 
 <footer>
-    <p>Desarrollo Web en Entorno Cliente - Organización de ejercicios</p>
+    <p>Desarrollo Web en Entorno Cliente - Organización de ejercicios &copy; 2024</p>
 </footer>
 
 <script>
@@ -159,16 +165,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     phaseTitles.forEach(title => {
         title.addEventListener('click', function() {
-            const phaseExercises = this.nextElementSibling;
-
-            // Alternar clase active
             this.classList.toggle('active');
-
-            // Expandir o colapsar ejercicios
-            if (phaseExercises.style.maxHeight) {
-                phaseExercises.style.maxHeight = null;
+            const content = this.nextElementSibling;
+            
+            if (content.style.maxHeight && content.style.maxHeight !== '0px') {
+                content.style.maxHeight = '0px';
             } else {
-                phaseExercises.style.maxHeight = phaseExercises.scrollHeight + "px";
+                content.style.maxHeight = content.scrollHeight + 'px';
             }
         });
     });
@@ -176,6 +179,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 </body>
 </html>
+
 
 
 
