@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Validador de Cadena</title>
+</head>
+<body>
+  <h1>Ejercicio 3: Validador de Cadena</h1>
+
+  <p>Introduce una cadena de texto:</p>
+  <input type="text" id="cadena" placeholder="Introduce texto">
+
+  <button onclick="validarCadena()">Validar</button>
+
+  <h2 id="resultado">Resultado:</h2>
+
+  <script>
+    // Expresión de función que valida si una cadena tiene más de 10 caracteres
+    const validador = function(cadena) {
+      return cadena.length > 10; 
+    };
+
+    // Función que obtiene el valor del input y muestra el resultado
+    function validarCadena() {
+      const cadena = document.getElementById('cadena').value;
+      
+      // Usamos el validador para comprobar la cadena
+      const resultado = validador(cadena) ? "La cadena tiene más de 10 caracteres." : "La cadena tiene 10 o menos caracteres.";
+      
+      // Mostramos el resultado en el HTML
+      document.getElementById('resultado').textContent = "Resultado: " + resultado;
+    }
+  </script>
+</body>
+</html>

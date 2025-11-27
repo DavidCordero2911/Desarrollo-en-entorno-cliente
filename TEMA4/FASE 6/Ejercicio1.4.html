@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Expresión de Función</title>
+</head>
+<body>
+  <h1>Ejercicio 4: Expresión de Función</h1>
+
+  <button onclick="mostrarSaludo()">Saludar</button>
+
+  <h2 id="resultado">Resultado: ---</h2>
+
+  <script>
+    // Expresión de función
+    const greet = function() {
+      return "Hola";
+    };
+
+    // Función que muestra el saludo
+    function mostrarSaludo() {
+      const saludo = greet();  
+      document.getElementById('resultado').textContent = "Resultado: " + saludo;
+    }
+  </script>
+</body>
+</html>
