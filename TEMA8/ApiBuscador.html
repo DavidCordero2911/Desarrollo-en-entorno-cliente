@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscador de Productos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        /* Contenedor del buscador */
+        .buscador {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        #inputBusqueda {
+            padding: 12px 20px;
+            font-size: 16px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            width: 300px;
+        }
+
+        #inputBusqueda:focus {
+            outline: none;
+            border-color: #4CAF50;
+        }
+
+        #btnBuscar {
+            padding: 12px 25px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        #btnBuscar:hover {
+            background-color: #45a049;
+        }
+
+        /* Mensajes */
+        #mensaje {
+            text-align: center;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        .mensaje-error {
+            background-color: #ffebee;
+            color: #c62828;
+            border: 1px solid #ef9a9a;
+        }
+
+        .mensaje-info {
+            background-color: #e3f2fd;
+            color: #1565c0;
+            border: 1px solid #90caf9;
+        }
+
+        .mensaje-exito {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            border: 1px solid #a5d6a7;
+        }
+
+        /* Tabla */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Imagen del producto */
+        .imagen-producto {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        /* Descripción corta */
+        .descripcion {
+            max-width: 300px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        /* Descuento */
+        .descuento {
+            background-color: #ff5722;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        /* Ocultar tabla cuando no hay resultados */
+        .oculto {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🔍 Buscador de Productos</h1>
+
+    <!-- Buscador: Input + Botón -->
+    <div class="buscador">
+        <input 
+            type="text" 
+            id="inputBusqueda" 
+            placeholder="Buscar productos... (ej: phone, laptop)"
+        >
+        <button id="btnBuscar">Buscar</button>
+    </div>
+
+    <!-- Mensaje de estado/error -->
+    <p id="mensaje"></p>
+
+    <!-- Tabla de resultados -->
+    <table id="tablaResultados" class="oculto">
+        <thead>
+            <tr>
+                <th>Imagen</th>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Descuento</th>
+            </tr>
+        </thead>
+        <tbody id="cuerpoTabla">
+            <!-- Aquí se añadirán los resultados -->
+        </tbody>
+    </table>
+
+    <script>
+
+        //Referencias al HTML
+        const inputBusqueda = document.getElementById('inputBusqueda');
+        const btnBuscar = document.getElementById('btnBuscar');
+        const mensaje = document.getElementById('mensaje');
+        const tablaResultados = document.getElementById('tablaResultados');
+        const cuerpoTabla = document.getElementById('cuerpoTabla');
+
+        //Función async para buscar productos
+        async function buscarProductos() {
+            
+            //Obtenemos el texto del input y quitamos espacios
+            const textoBusqueda = inputBusqueda.value.trim();
+
+            //VALIDACIÓN: Comprobar que no esté vacío
+            if (textoBusqueda === '') {
+                mostrarMensaje('⚠️ Por favor, escribe algo para buscar', 'error');
+                tablaResultados.classList.add('oculto');
+                return; // Salimos de la función
+            }
+            
+            //Mostramos mensaje de carga
+            mostrarMensaje('🔄 Buscando productos...', 'info');
+            
+            try {
+                //Construir la URL con el parámetro de búsqueda
+                const url = `https://dummyjson.com/products/search?q=${textoBusqueda}`;
+                
+                console.log('URL de búsqueda:', url);
+                
+                //Hacemos la petición
+                const respuesta = await fetch(url);
+                
+                //Convertimos a JSON
+                const datos = await respuesta.json();
+                
+                //Los productos están en datos.products
+                const productos = datos.products;
+                
+                console.log('Productos encontrados:', productos);
+                
+                //Comprobamos si hay resultados
+                if (productos.length === 0) {
+                    // NO hay productos
+                    mostrarMensaje(
+                        `😕 No se encontraron productos que coincidan con "${textoBusqueda}"`, 
+                        'error'
+                    );
+                    tablaResultados.classList.add('oculto');
+                    return; // Salimos de la función
+                }
+                
+                //SÍ hay productos - los pintamos
+                pintarResultados(productos);
+                mostrarMensaje(
+                    `✅ Se encontraron ${productos.length} productos para "${textoBusqueda}"`, 
+                    'exito'
+                );
+                
+            } catch (error) {
+                console.error('Error en la búsqueda:', error);
+                mostrarMensaje('❌ Error al conectar con el servidor', 'error');
+                tablaResultados.classList.add('oculto');
+            }
+        }
+
+        //Función para pintar resultados en la tabla
+        function pintarResultados(productos) {
+            
+            //Limpiamos la tabla
+            cuerpoTabla.innerHTML = '';
+            
+            //Mostramos la tabla (quitamos clase oculto)
+            tablaResultados.classList.remove('oculto');
+            
+            //Recorremos los productos
+            for (const producto of productos) {
+                
+                //Creamos la fila
+                const fila = document.createElement('tr');
+                
+                //Acortamos la descripción si es muy larga (máximo 100 caracteres)
+                let descripcionCorta = producto.description;
+                if (descripcionCorta.length > 100) {
+                    descripcionCorta = descripcionCorta.substring(0, 100) + '...';
+                }
+                
+                //Añadimos el contenido
+                fila.innerHTML = `
+                    <td>
+                        <img 
+                            src="${producto.thumbnail}" 
+                            alt="${producto.title}"
+                            class="imagen-producto"
+                        >
+                    </td>
+                    <td><strong>${producto.title}</strong></td>
+                    <td class="descripcion">${descripcionCorta}</td>
+                    <td>
+                        <span class="descuento">-${producto.discountPercentage}%</span>
+                    </td>
+                `;
+                
+                //Añadimos la fila a la tabla
+                cuerpoTabla.appendChild(fila);
+            }
+        }
+
+        //Función auxiliar para mostrar mensajes
+        function mostrarMensaje(texto, tipo) {
+            mensaje.textContent = texto;
+            
+            //Quitamos todas las clases de mensaje
+            mensaje.classList.remove('mensaje-error', 'mensaje-info', 'mensaje-exito');
+            
+            //Añadimos la clase según el tipo
+            if (tipo === 'error') {
+                mensaje.classList.add('mensaje-error');
+            } else if (tipo === 'info') {
+                mensaje.classList.add('mensaje-info');
+            } else if (tipo === 'exito') {
+                mensaje.classList.add('mensaje-exito');
+            }
+        }
+
+        //Eventos
+        //Evento click en el botón
+        btnBuscar.addEventListener('click', buscarProductos);
+        
+        //También añadimos el buscar al pulsar Enter en el input
+        inputBusqueda.addEventListener('keypress', function(evento) {
+            if (evento.key === 'Enter') {
+                buscarProductos();
+            }
+        });
+
+    </script>
+
+</body>
+</html>

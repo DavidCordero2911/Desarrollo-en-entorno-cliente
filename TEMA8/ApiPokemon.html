@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokémon API - Peticiones Secuenciales</title>
+    <style>
+        /* Estilos básicos para que se vea bonito */
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            text-align: center;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 18px;
+            background-color: #ee1515;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        button:hover {
+            background-color: #cc0000;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #3b4cca;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        img {
+            width: 80px;
+            height: 80px;
+        }
+
+        #mensaje {
+            color: #666;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🎮 Pokédex Básica</h1>
+    
+    <!-- Botón que dispara las peticiones -->
+    <button id="btnCargar">Cargar Pokémon</button>
+    
+    <!-- Mensaje de estado -->
+    <p id="mensaje"></p>
+
+    <!-- Tabla donde mostraremos los datos -->
+    <table id="tablaPokemon">
+        <thead>
+            <tr>
+                <th>Foto</th>
+                <th>Nombre</th>
+                <th>Experiencia Base</th>
+            </tr>
+        </thead>
+        <tbody id="cuerpoTabla">
+            <!-- Aquí se añadirán las filas dinámicamente -->
+        </tbody>
+    </table>
+
+    <script>
+        //Crear el array de IDs de Pokémon que qeuueremos cargar
+        const arrayIds = [67, 150, 153];
+
+        //Obtenemos referencias del HTML
+        const boton = document.getElementById('btnCargar');
+        const cuerpoTabla = document.getElementById('cuerpoTabla');
+        const mensaje = document.getElementById('mensaje');
+
+        //Función async para hacer las peticiones
+        async function cargarPokemon() {
+            
+            //Limpiar tabla antes de cargar (por si pulsas varias veces)
+            cuerpoTabla.innerHTML = '';
+            
+            //Mostrar mensaje de carga
+            mensaje.textContent = 'Cargando Pokémon...';
+
+            //Recorremos el array con for...of
+            for (const id of arrayIds) {
+                
+                try {
+                    //Hacemos la petición a la API
+                    //await hace que espere a que termine antes de continuar
+                    const respuesta = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
+                    
+                    //Convertir la respuesta a JSON
+                    const pokemon = await respuesta.json();
+                    
+                    //Extraemos los datos que necesitamos
+                    const nombre = pokemon.name;
+                    const foto = pokemon.sprites.front_default;
+                    const experiencia = pokemon.base_experience;
+                    
+                    //Creamos y añadimos fila a la tabla
+                    const fila = document.createElement('tr');
+                    
+                    //Añadimos el contenido HTML de la fila
+                    fila.innerHTML = `
+                        <td><img src="${foto}" alt="${nombre}"></td>
+                        <td>${nombre.toUpperCase()}</td>
+                        <td>${experiencia}</td>
+                    `;
+                    
+                    //Añadimos la fila al cuerpo de la tabla
+                    cuerpoTabla.appendChild(fila);
+                    
+                    console.log(`✅ Pokémon ${nombre} cargado correctamente`);
+                    
+                } catch (error) {
+                    //Si hay algún error, lo mostramos
+                    console.error(`❌ Error al cargar el Pokémon con ID ${id}:`, error);
+                }
+            }
+            
+            //Mensaje final
+            mensaje.textContent = '¡Todos los Pokémon cargados!';
+        }
+
+        //Añadimos evento click al botón
+        boton.addEventListener('click', cargarPokemon);
+
+    </script>
+
+</body>
+</html>

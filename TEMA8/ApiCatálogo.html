@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de Productos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        /* Contenedor de botones */
+        .botones {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 12px 25px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        #btnCargar {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        #btnCargar:hover {
+            background-color: #45a049;
+        }
+
+        #btnFiltrar {
+            background-color: #ff9800;
+            color: white;
+        }
+
+        #btnFiltrar:hover {
+            background-color: #e68900;
+        }
+
+        #btnMostrarTodos {
+            background-color: #2196F3;
+            color: white;
+        }
+
+        #btnMostrarTodos:hover {
+            background-color: #1976D2;
+        }
+
+        /* Estilos de la tabla */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #333;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Resaltar stock bajo */
+        .stock-bajo {
+            color: red;
+            font-weight: bold;
+        }
+
+        #mensaje {
+            text-align: center;
+            color: #666;
+            font-style: italic;
+        }
+
+        #contador {
+            text-align: center;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🛒 Catálogo de Productos</h1>
+
+    <!-- Contenedor de botones -->
+    <div class="botones">
+        <button id="btnCargar">Cargar Productos</button>
+        <button id="btnFiltrar">Filtrar por Stock Bajo</button>
+        <button id="btnMostrarTodos">Mostrar Todos</button>
+    </div>
+
+    <!-- Mensaje de estado -->
+    <p id="mensaje"></p>
+    
+    <!-- Contador de productos -->
+    <p id="contador"></p>
+
+    <!-- Tabla de productos -->
+    <table id="tablaProductos">
+        <thead>
+            <tr>
+                <th>Título</th>
+                <th>Precio</th>
+                <th>Stock</th>
+                <th>Marca</th>
+            </tr>
+        </thead>
+        <tbody id="cuerpoTabla">
+            <!-- Aquí se añadirán las filas -->
+        </tbody>
+    </table>
+
+    <script>
+        
+        //Variables globales
+        
+        //Variable para guardar TODOS los productos
+        //La necesitamos global para poder filtrar después
+        let todosLosProductos = [];
+
+        //Referencias al HTML
+        const btnCargar = document.getElementById('btnCargar');
+        const btnFiltrar = document.getElementById('btnFiltrar');
+        const btnMostrarTodos = document.getElementById('btnMostrarTodos');
+        const cuerpoTabla = document.getElementById('cuerpoTabla');
+        const mensaje = document.getElementById('mensaje');
+        const contador = document.getElementById('contador');
+
+        //Función async para obtener productos
+        async function obtenerProductos() {
+            
+            mensaje.textContent = 'Cargando productos...';
+            
+            try {
+                //Hacemos la petición a la API
+                const respuesta = await fetch('https://dummyjson.com/products');
+                
+                //Convertimos a JSON
+                const datos = await respuesta.json();
+                
+                //Los productos están dentro de datos.products
+                //Guardamos el array en nuestra variable global
+                todosLosProductos = datos.products;
+                
+                console.log('Productos cargados:', todosLosProductos);
+                
+                //Pintamos todos los productos en la tabla
+                pintarTabla(todosLosProductos);
+                
+                mensaje.textContent = '¡Productos cargados correctamente!';
+                
+            } catch (error) {
+                console.error('Error al cargar productos:', error);
+                mensaje.textContent = '❌ Error al cargar los productos';
+            }
+        }
+
+        //Función para pintar la tabla
+        //Esta función recibe un array de productos y los pinta
+        //Así la podemos reutilizar para todos o para los filtrados
+        function pintarTabla(productos) {
+            
+            //Limpiamos la tabla antes de pintar
+            cuerpoTabla.innerHTML = '';
+            
+            //Recorremos el array de productos
+            for (const producto of productos) {
+                
+                //Creamos una fila
+                const fila = document.createElement('tr');
+                
+                //Comprobamos si el stock es bajo para añadir clase CSS
+                const claseStock = producto.stock < 10 ? 'stock-bajo' : '';
+                
+                //Añadimos el contenido de la fila
+                fila.innerHTML = `
+                    <td>${producto.title}</td>
+                    <td>${producto.price} €</td>
+                    <td class="${claseStock}">${producto.stock} uds</td>
+                    <td>${producto.brand}</td>
+                `;
+                
+                //Añadimos la fila a la tabla
+                cuerpoTabla.appendChild(fila);
+            }
+            
+            //Actualizamos el contador
+            contador.textContent = `Mostrando ${productos.length} productos`;
+        }
+
+
+        //Función para filtrar por stock bajo
+        function filtrarStockBajo() {
+            
+            //Comprobamos que haya productos cargados
+            if (todosLosProductos.length === 0) {
+                mensaje.textContent = '⚠️ Primero debes cargar los productos';
+                return; // Salimos de la función
+            }
+            
+            //Filtramos: solo los que tienen stock menor a 10
+            const productosFiltrados = todosLosProductos.filter(function(producto) {
+                return producto.stock < 10;
+            });
+            
+            //También se puede escribir con arrow function:
+            //const productosFiltrados = todosLosProductos.filter(p => p.stock < 10);
+            console.log('Productos con stock bajo:', productosFiltrados);
+            
+            //Pintamos solo los filtrados
+            pintarTabla(productosFiltrados);
+            
+            mensaje.textContent = `🔍 Mostrando productos con menos de 10 unidades en stock`;
+        }
+
+        //Función para mostrar todos los productos
+        function mostrarTodos() {
+            
+            //Comprobamos que haya productos cargados
+            if (todosLosProductos.length === 0) {
+                mensaje.textContent = '⚠️ Primero debes cargar los productos';
+                return;
+            }
+            
+            //Pintamos todos los productos
+            pintarTabla(todosLosProductos);
+            
+            mensaje.textContent = '📋 Mostrando todos los productos';
+        }
+
+        //Añadimos eventos a los botones
+        btnCargar.addEventListener('click', obtenerProductos);
+        btnFiltrar.addEventListener('click', filtrarStockBajo);
+        btnMostrarTodos.addEventListener('click', mostrarTodos);
+
+    </script>
+
+</body>
+</html>

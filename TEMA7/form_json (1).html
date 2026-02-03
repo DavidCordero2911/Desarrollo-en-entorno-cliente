@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Alumnos</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; padding: 30px; background-color: #f4f7f6; }
+        /* He ampliado un poco el max-width para que quepan bien los nuevos botones */
+        .container { background: white; padding: 20px; border-radius: 10px; max-width: 700px; margin: auto; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        h2 { color: #333; text-align: center; }
+        input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
+        
+        .botones { display: flex; gap: 10px; margin-bottom: 10px; }
+        button { flex: 1; padding: 12px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; color: white; }
+        
+        .btn-add { background-color: #007bff; }
+        .btn-clear { background-color: #dc3545; }
+        
+        /*Estilos para los botones de JSON */
+        .btn-download { background-color: #28a745; } /* Verde */
+        .btn-upload { background-color: #fd7e14; }   /* Naranja */
+
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #eee; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Listado con Persistencia</h2>
+    <form id="formAlumno">
+        <!--Campos solicitados -->
+        <input type="text" id="nombre" placeholder="Nombre" required>
+        <input type="text" id="apellidos" placeholder="Apellidos" required>
+        <div style="display: flex; gap: 10px;">
+            <input type="number" id="edad" placeholder="Edad" required>
+            <input type="number" id="nota" placeholder="Nota" step="0.1" required>
+        </div>
+        <input type="number" id="movil" placeholder="Móvil (empieza por 6, 9 dígitos)" required>
+        <!-- Fin nuevos campos -->
+
+        <div class="botones">
+            <button type="submit" class="btn-add">Añadir Alumno</button>
+            <button type="button" id="btnBorrarTodo" class="btn-clear">Borrar Todo</button>
+        </div>
+    </form>
+
+    <!--Botones para JSON -->
+    <div class="botones">
+        <button type="button" id="btnDescargar" class="btn-download">Descargar JSON</button>
+        <button type="button" id="btnSubirTrigger" class="btn-upload">Subir JSON</button>
+        <!-- Input file oculto para hacer la subida más estética -->
+        <input type="file" id="inputSubirArchivo" accept=".json" style="display: none;">
+    </div>
+
+    <table id="tabla">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Nombre</th>
+                <th>Apellidos</th>
+                <th>Edad</th>
+                <th>Nota</th>
+                <th>Móvil</th>
+            </tr>
+        </thead>
+        <tbody id="cuerpo"></tbody>
+    </table>
+</div>
+
+<script>
+    // --- 1. INICIALIZACIÓN (Cargar datos del LocalStorage) ---
+    let alumnos = JSON.parse(localStorage.getItem('alumnos_dwec')) || [];
+
+    const form = document.getElementById('formAlumno');
+    const cuerpo = document.getElementById('cuerpo');
+    const btnClear = document.getElementById('btnBorrarTodo');
+
+    //Al arrancar, pintamos lo que haya en memoria
+    renderizar();
+
+    // --- 2. GESTIÓN DE DATOS ---
+
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        //Recogemos los valores
+        const nombreVal = document.getElementById('nombre').value;
+        const apellidosVal = document.getElementById('apellidos').value; 
+        const edadVal = document.getElementById('edad').value;           
+        const notaVal = document.getElementById('nota').value;           
+        const movilVal = document.getElementById('movil').value;        
+
+        //Validación del móvil (Empieza por 6 y tiene 9 dígitos)
+        //Usamos una Expresión Regular sencilla: ^6 significa empieza por 6, \d{8} significa 8 dígitos más.
+        const regexMovil = /^6\d{8}$/;
+
+        if (!regexMovil.test(movilVal)) {
+            alert("Error: El móvil debe tener 9 dígitos y empezar por 6.");
+            return; // Detenemos la función, no se añade nada.
+        }
+
+        //Creamos el objeto con todos los datos
+        const nuevo = { 
+            nombre: nombreVal,
+            apellidos: apellidosVal,
+            edad: edadVal,
+            nota: notaVal,
+            movil: movilVal
+        };
+        
+        alumnos.push(nuevo);
+        guardarYSincronizar(); 
+        form.reset();
+    });
+
+    btnClear.addEventListener('click', () => {
+        if(confirm("¿Seguro que quieres borrar toda la lista?")) {
+            alumnos = [];
+            guardarYSincronizar();
+        }
+    });
+
+    // --- NUEVO: FUNCIONALIDAD JSON (Descargar y Subir) ---
+
+    //1. Descargar JSON
+    document.getElementById('btnDescargar').addEventListener('click', () => {
+        //Convertimos el array de alumnos a texto JSON
+        const dataStr = JSON.stringify(alumnos, null, 2); //null, 2 es para que se vea bonito con saltos de línea
+        //Creamos un "blob" (un archivo en memoria)
+        const blob = new Blob([dataStr], { type: "application/json" });
+        //Creamos una URL para ese archivo
+        const url = URL.createObjectURL(blob);
+        
+        //Creamos un enlace temporal invisible para forzar la descarga
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = "alumnos_data.json";
+        a.click();
+        
+        //Limpiamos memoria
+        URL.revokeObjectURL(url);
+    });
+
+    //2. Subir JSON
+    //Al pulsar el botón naranja, hacemos clic en el input file oculto
+    document.getElementById('btnSubirTrigger').addEventListener('click', () => {
+        document.getElementById('inputSubirArchivo').click();
+    });
+
+    //Cuando el usuario selecciona un archivo
+    document.getElementById('inputSubirArchivo').addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        
+        //Cuando el archivo se termine de leer
+        reader.onload = (evento) => {
+            try {
+                const contenido = evento.target.result;
+                const datosCargados = JSON.parse(contenido);
+                
+                //Verificamos que sea un array para evitar errores
+                if (Array.isArray(datosCargados)) {
+                    alumnos = datosCargados;
+                    guardarYSincronizar(); // Actualiza localStorage y la tabla
+                    alert("Datos cargados correctamente.");
+                } else {
+                    alert("El archivo JSON no tiene el formato correcto (debe ser una lista).");
+                }
+            } catch (error) {
+                alert("Error al leer el archivo JSON.");
+            }
+        };
+
+        reader.readAsText(file); //Leemos el archivo como texto
+        //Limpiamos el input para permitir subir el mismo archivo de nuevo si se desea
+        e.target.value = ''; 
+    });
+
+    // --- 3. PERSISTENCIA Y VISTA ---
+
+    function guardarYSincronizar() {
+        localStorage.setItem('alumnos_dwec', JSON.stringify(alumnos));
+        renderizar();
+    }
+
+    function renderizar() {
+        cuerpo.innerHTML = "";
+        alumnos.forEach((alum, i) => {
+            const tr = document.createElement('tr');
+            //Añadimos las celdas correspondientes a los nuevos datos
+            tr.innerHTML = `
+                <td>${i + 1}</td>
+                <td>${alum.nombre}</td>
+                <td>${alum.apellidos || '-'}</td>
+                <td>${alum.edad || '-'}</td>
+                <td>${alum.nota || '-'}</td>
+                <td>${alum.movil || '-'}</td>
+            `;
+            cuerpo.appendChild(tr);
+        });
+    }
+</script>
+
+</body>
+</html>
